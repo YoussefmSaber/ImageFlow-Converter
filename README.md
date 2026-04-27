@@ -13,6 +13,10 @@
  <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT"></a>
 </p>
 
+## DEMO 📹:
+
+https://github.com/user-attachments/assets/b3d03a0a-118f-4c46-9e8a-77427474fab1
+
 <!-- Plugin description -->
 **ImageFlow Converter** is a fast and focused image conversion plugin for **IntelliJ IDEA** and **Android Studio**. It helps developers work with common image formats more efficiently by bringing conversion tools directly into the IDE, so you can stay in flow without jumping between external apps.
 
