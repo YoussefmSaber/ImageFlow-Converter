@@ -1,0 +1,33 @@
+<idea-plugin>
+    <id>com.yousseflabs.iamgeflowconverter</id>
+    <name>ImageFlow Converter</name>
+    <vendor email="youssefsaber.dev@gmail.com">ImageFlow Converter</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow
+            id="ImageFlow-converter"
+            displayName="ImageFlow Converter"
+            anchor="right"
+            secondary="false"
+            canCloseContents="false"
+            factoryClass="com.yousseflabs.iamgeflowconverter.panel.ImageFlowToolWindowFactory"/>
+    </extensions>
+    <actions>
+        <group id="ImageFlow.ContextMenu" text="ImageFlow" popup="true">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
+            <action
+                id="ImageFlow.ConvertToWebP"
+                class="com.yousseflabs.iamgeflowconverter.actions.ConvertContextMenuAction"
+                text="Convert Images to WebP"
+                description="Convert selected image files or folder to WebP format"/>
+        </group>
+        <action
+            id="ImageFlow.OpenConverter"
+            class="com.yousseflabs.iamgeflowconverter.actions.OpenConverterAction"
+            text="ImageFlow Converter…"
+            description="Open the ImageFlow image conversion dialog">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
