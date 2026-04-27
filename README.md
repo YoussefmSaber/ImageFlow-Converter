@@ -1,18 +1,16 @@
 <p align="center">
-  <a href="https://plugins.jetbrains.com/" target="_blank" rel="noopener noreferrer">
-    <img width="96" height="96" alt="ImageFlow Converter Logo" src="https://via.placeholder.com/96" />
+  <a href="https://plugins.jetbrains.com/plugin/31487-imageflow-converter" target="_blank">
+    <img width="96" height="96" alt="ImageFlow Converter Logo" src="https://github.com/user-attachments/assets/f585b787-5d74-4208-a9d1-e499ba1a473d" />
   </a>
 </p>
 
 <h1 align="center">ImageFlow Converter</h1>
 
 <p align="center">
-  <a href="https://plugins.jetbrains.com/" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/JetBrains-Compatible-000000?style=for-the-badge&logo=jetbrains&logoColor=white" alt="JetBrains Compatible">
+  <a href="https://plugins.jetbrains.com/plugin/31487-imageflow-converter" target="_blank">
+    <img src="https://img.shields.io/jetbrains/plugin/31487-imageflow-converter?style=for-the-badge&logo=jetbrains" alt="Downloads">
   </a>
-  <a href="./LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT">
-  </a>
+ <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT"></a>
 </p>
 
 <!-- Plugin description -->
