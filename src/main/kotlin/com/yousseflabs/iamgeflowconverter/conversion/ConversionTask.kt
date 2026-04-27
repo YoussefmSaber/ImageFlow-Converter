@@ -1,12 +1,12 @@
 package com.yousseflabs.iamgeflowconverter.conversion
 
-import com.intellij.conversion.ConversionResult
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFileManager
-import com.yousseflabs.iamgeflowconverter.model.ConversionOptions
-import com.yousseflabs.iamgeflowconverter.model.ImageFile
+import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionOptions
+import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionResult
+import com.yousseflabs.iamgeflowconverter.model.image.ImageFile
 
 class ConversionTask(
     project: Project,

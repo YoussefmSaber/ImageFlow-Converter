@@ -1,12 +1,12 @@
 package com.yousseflabs.iamgeflowconverter.conversion
 
-import com.intellij.conversion.ConversionResult
 import com.intellij.util.ui.UIUtil
-import com.yousseflabs.iamgeflowconverter.model.ConversionMode
-import com.yousseflabs.iamgeflowconverter.model.ConversionOptions
-import com.yousseflabs.iamgeflowconverter.model.DensityVariant
-import com.yousseflabs.iamgeflowconverter.model.OutputFormat
-import com.yousseflabs.iamgeflowconverter.model.ResizeMode
+import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionMode
+import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionOptions
+import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionResult
+import com.yousseflabs.iamgeflowconverter.model.conversion.DensityVariant
+import com.yousseflabs.iamgeflowconverter.model.conversion.OutputFormat
+import com.yousseflabs.iamgeflowconverter.model.conversion.ResizeMode
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
