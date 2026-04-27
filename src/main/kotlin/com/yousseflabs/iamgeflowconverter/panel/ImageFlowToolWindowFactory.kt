@@ -9,11 +9,10 @@ import com.yousseflabs.iamgeflowconverter.ui.ImageFlowPanel
 
 class ImageFlowToolWindowFactory : ToolWindowFactory, DumbAware {
 
-    override fun isApplicable(project: Project): Boolean = true
-
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val panel  = ImageFlowPanel(project)
-        val content = ContentFactory.getInstance().createContent(panel, "", false)
+        val panel = ImageFlowPanel(project)
+        val contentFactory = ContentFactory.getInstance()
+        val content = contentFactory.createContent(panel, "", false)
         toolWindow.contentManager.addContent(content)
     }
 }

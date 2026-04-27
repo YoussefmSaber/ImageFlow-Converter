@@ -14,7 +14,7 @@ import java.io.File
 
 class ConvertContextMenuAction : AnAction() {
 
-    override fun getActionUpdateThread() = ActionUpdateThread.BGT
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
         val files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY) ?: emptyArray()
@@ -32,7 +32,7 @@ class ConvertContextMenuAction : AnAction() {
         if (!dialog.showAndGet()) return
 
         val options = dialog.buildOptions()
-        ConversionTask(project, images, options) { _ ->
+        ConversionTask(project, images, options) {
             VirtualFileManager.getInstance().asyncRefresh(null)
         }.queue()
     }
