@@ -1,0 +1,145 @@
+name: Publish & Update Changelog
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [master]
+
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
+
+      - name: Inject PR notes into CHANGELOG.md
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          python3 - <<'EOF'
+          import os, re
+
+          body      = os.environ.get("PR_BODY", "")
+          pr_title  = os.environ.get("PR_TITLE", "")
+          pr_number = os.environ.get("PR_NUMBER", "")
+          pr_url    = os.environ.get("PR_URL", "")
+
+          # ── Parse the structured sections from the PR template ─────────────────
+          # Expected headings in PR body: ### Added / Fixed / Changed / Removed
+          categories = ["Added", "Fixed", "Changed", "Deprecated", "Removed"]
+          extracted = {c: [] for c in categories}
+
+          current = None
+          for line in body.splitlines():
+              line = line.rstrip()
+              heading_match = re.match(r"^#{1,4}\s+(Added|Fixed|Changed|Deprecated|Removed)", line)
+              if heading_match:
+                  current = heading_match.group(1)
+              elif current and line.startswith("- ") and line.strip() != "- _None_":
+                  extracted[current].append(line.strip())
+
+          # Fallback: if nothing was parsed, add the PR title as a generic entry
+          has_entries = any(extracted[c] for c in categories)
+          if not has_entries:
+              extracted["Changed"].append(
+                  f"- {pr_title} ([#{pr_number}]({pr_url}))"
+              )
+
+          # ── Build the block of new lines to insert ─────────────────────────────
+          new_lines = []
+          for cat in categories:
+              if extracted[cat]:
+                  new_lines.append(f"\n### {cat}")
+                  for entry in extracted[cat]:
+                      # Append PR reference if not already present
+                      if f"#{pr_number}" not in entry:
+                          entry = f"{entry} ([#{pr_number}]({pr_url}))"
+                      new_lines.append(entry)
+
+          if not new_lines:
+              print("Nothing to add to changelog.")
+              exit(0)
+
+          # ── Inject after the [Unreleased] heading in CHANGELOG.md ─────────────
+          with open("CHANGELOG.md", "r") as f:
+              content = f.read()
+
+          unreleased_pattern = re.compile(
+              r"(## \[Unreleased\])(.*?)(^## \[)",
+              re.DOTALL | re.MULTILINE,
+          )
+
+          match = unreleased_pattern.search(content)
+          if not match:
+              print("Could not find [Unreleased] section.")
+              exit(1)
+
+          unreleased_block = match.group(2)
+
+          # Remove existing empty category placeholders and append new entries
+          cleaned = re.sub(r"\n### (Added|Fixed|Changed|Deprecated|Removed)\n(?=\n|###|## )", "", unreleased_block)
+          updated_block = cleaned.rstrip() + "\n" + "\n".join(new_lines) + "\n\n"
+
+          new_content = (
+              content[: match.start(2)]
+              + updated_block
+              + content[match.start(3):]
+          )
+
+          with open("CHANGELOG.md", "w") as f:
+              f.write(new_content)
+
+          print("Changelog updated successfully.")
+          EOF
+
+      - name: Commit changelog update
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git diff --cached --quiet || git commit -m "chore: update changelog for PR #${{ github.event.pull_request.number }}"
+          git push
+
+      - name: Build Plugin
+        run: ./gradlew buildPlugin
+
+      - name: Verify Plugin
+        run: ./gradlew verifyPlugin
+
+      - name: Publish Plugin
+        env:
+          PUBLISH_TOKEN:        ${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
+          CERTIFICATE_CHAIN:    ${{ secrets.CERTIFICATE_CHAIN }}
+          PRIVATE_KEY:          ${{ secrets.PRIVATE_KEY }}
+          PRIVATE_KEY_PASSWORD: ${{ secrets.PRIVATE_KEY_PASSWORD }}
+          GITHUB_RUN_NUMBER:    ${{ github.run_number }}
+        run: ./gradlew publishPlugin

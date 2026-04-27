@@ -1,45 +1,122 @@
+import org.jetbrains.changelog.Changelog
+import org.jetbrains.changelog.markdownToHTML
+
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.25"
-    id("org.jetbrains.intellij.platform") version "2.3.0"
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.intellijPlatform)
+    alias(libs.plugins.changelog)
 }
 
-group = "com.github.yousseflabs.imageflowconverter"
-version = "1.0.0"
+group = providers.gradleProperty("pluginGroup").get()
+
+val baseVersion = providers.gradleProperty("pluginVersion").get()
+val runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
+version = "$baseVersion.$runNumber"
+
+kotlin {
+    jvmToolchain(17)
+}
 
 repositories {
     mavenCentral()
-    intellijPlatform { defaultRepositories() }
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 dependencies {
     intellijPlatform {
-        intellijIdeaCommunity("2024.1")
-        bundledPlugin("com.intellij.java")
+        // Use a downloadable IntelliJ Platform target instead of a local IDE path.
+        // This keeps the build portable across Windows, macOS, and Linux.
+        intellijIdeaCommunity(providers.gradleProperty("platformVersion").get())
+
+        bundledPlugins("org.jetbrains.kotlin", "com.intellij.java")
         pluginVerifier()
         zipSigner()
-        instrumentationTools()
     }
+
+    // WebP support
     implementation("org.sejda.imageio:webp-imageio:0.1.6")
 }
 
-kotlin { jvmToolchain(17) }
-
 intellijPlatform {
+    buildSearchableOptions.set(false)
+
     pluginConfiguration {
-        id = "com.github.yousseflabs.imageflowconverter"
-        name = "ImageFlow Converter"
-        version = "1.0.0"
-        ideaVersion {
-            sinceBuild = "221"   // IntelliJ 2022.1
-            untilBuild = "252.*"
+        name = providers.gradleProperty("pluginName")
+        version = provider { "$baseVersion.$runNumber" }
+
+        description = providers.fileContents(
+            layout.projectDirectory.file("README.md")
+        ).asText.map {
+            val start = "<!-- Plugin description -->"
+            val end = "<!-- Plugin description end -->"
+
+            with(it.lines()) {
+                if (!containsAll(listOf(start, end))) {
+                    throw GradleException(
+                        "Plugin description section not found in README.md:\n$start ... $end"
+                    )
+                }
+
+                subList(indexOf(start) + 1, indexOf(end))
+                    .joinToString("\n")
+                    .let(::markdownToHTML)
+            }
         }
+
+        val changelog = project.changelog
+        changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
+            with(changelog) {
+                renderItem(
+                    (getOrNull(pluginVersion) ?: getUnreleased())
+                        .withHeader(false)
+                        .withEmptySections(false),
+                    Changelog.OutputType.HTML,
+                )
+            }
+        }
+
+        ideaVersion {
+            sinceBuild = providers.gradleProperty("pluginSinceBuild")
+            untilBuild = providers.gradleProperty("pluginUntilBuild")
+        }
+
         vendor {
-            name = "ImageFlow Converter"
-            email = "youssefsaber.dev@gmail.com"
+            name = providers.gradleProperty("pluginVendorName")
+            email = providers.gradleProperty("pluginVendorEmail")
+            url = providers.gradleProperty("pluginRepositoryUrl")
         }
     }
-    pluginVerification { ides { recommended() } }
+
+    signing {
+        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+        privateKey = providers.environmentVariable("PRIVATE_KEY")
+        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
+    }
+
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+        channels = providers.gradleProperty("pluginVersion").map {
+            listOf(
+                it.substringAfter('-', "")
+                    .substringBefore('.')
+                    .ifEmpty { "default" }
+            )
+        }
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
 }
 
-tasks { wrapper { gradleVersion = "8.10" } }
+changelog {
+    groups.empty()
+    repositoryUrl = providers.gradleProperty("pluginRepositoryUrl")
+    versionPrefix = ""
+    headerParserRegex = Regex("""(\d+\.\d+\.\d+)""")
+}
