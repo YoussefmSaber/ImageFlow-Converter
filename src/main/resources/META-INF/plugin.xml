@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.yousseflabs.iamgeflowconverter</id>
     <name>ImageFlow Converter</name>
-    <vendor email="youssefsaber.dev@gmail.com">ImageFlow Converter</vendor>
+    <vendor email="youssefsaber.dev@gmail.com">Youssef Saber</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <extensions defaultExtensionNs="com.intellij">
@@ -25,7 +25,7 @@
         <action
             id="ImageFlow.OpenConverter"
             class="com.yousseflabs.iamgeflowconverter.actions.OpenConverterAction"
-            text="ImageFlow Converter…"
+            text="ImageFlow Converter..."
             description="Open the ImageFlow image conversion dialog">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
