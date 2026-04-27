@@ -11,7 +11,7 @@ plugins {
 group = providers.gradleProperty("pluginGroup").get()
 
 val baseVersion = providers.gradleProperty("pluginVersion").get()
-val runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "2"
+val runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "3"
 version = "$baseVersion.$runNumber"
 
 kotlin {
@@ -78,7 +78,9 @@ intellijPlatform {
 
         ideaVersion {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
-            untilBuild = providers.gradleProperty("pluginUntilBuild")
+            untilBuild = providers.gradleProperty("pluginUntilBuild").orNull?.let { value ->
+                value.ifBlank { null }
+            }?.let { provider { it } } ?: provider { null }
         }
 
         vendor {
