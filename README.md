@@ -10,7 +10,7 @@
   <a href="https://plugins.jetbrains.com/plugin/31487-imageflow-converter" target="_blank">
     <img src="https://img.shields.io/jetbrains/plugin/31487-imageflow-converter?style=for-the-badge&logo=jetbrains" alt="Downloads">
   </a>
- <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT"></a>
+ <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT"></a>
 </p>
 
 <!-- Plugin description -->
