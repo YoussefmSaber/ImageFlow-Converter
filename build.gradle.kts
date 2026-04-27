@@ -11,7 +11,7 @@ plugins {
 group = providers.gradleProperty("pluginGroup").get()
 
 val baseVersion = providers.gradleProperty("pluginVersion").get()
-val runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "0"
+val runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "2"
 version = "$baseVersion.$runNumber"
 
 kotlin {
@@ -27,8 +27,6 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        // Use a downloadable IntelliJ Platform target instead of a local IDE path.
-        // This keeps the build portable across Windows, macOS, and Linux.
         intellijIdeaCommunity(providers.gradleProperty("platformVersion").get())
 
         bundledPlugins("org.jetbrains.kotlin", "com.intellij.java")

@@ -1,6 +1,6 @@
 package com.yousseflabs.iamgeflowconverter.conversion
 
-import com.intellij.util.ui.UIUtil
+import com.intellij.util.ui.ImageUtil
 import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionMode
 import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionOptions
 import com.yousseflabs.iamgeflowconverter.model.conversion.ConversionResult
@@ -106,7 +106,7 @@ object ImageConverter {
         val w = maxOf(1, finalW)
         val h = maxOf(1, finalH)
 
-        val result = UIUtil.createImage(w, h, image.type.takeIf { it != 0 } ?: BufferedImage.TYPE_INT_ARGB)
+        val result = ImageUtil.createImage(w, h, image.type.takeIf { it != 0 } ?: BufferedImage.TYPE_INT_ARGB)
         val g = result.createGraphics()
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,  RenderingHints.VALUE_INTERPOLATION_BICUBIC)
         g.setRenderingHint(RenderingHints.KEY_RENDERING,      RenderingHints.VALUE_RENDER_QUALITY)
@@ -119,7 +119,7 @@ object ImageConverter {
     private fun prepareForFormat(image: BufferedImage, format: OutputFormat): BufferedImage {
         if (format != OutputFormat.JPEG) return image
         if (image.colorModel.hasAlpha()) {
-            val rgb = UIUtil.createImage(image.width, image.height, BufferedImage.TYPE_INT_RGB)
+            val rgb = ImageUtil.createImage(image.width, image.height, BufferedImage.TYPE_INT_RGB)
             val g = rgb.createGraphics()
             g.drawImage(image, 0, 0, null)
             g.dispose()
