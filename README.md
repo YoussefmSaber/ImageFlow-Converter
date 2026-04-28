@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://plugins.jetbrains.com/plugin/31487-imageflow-converter" target="_blank">
-    <img src="https://img.shields.io/jetbrains/plugin/31487-imageflow-converter?style=for-the-badge&logo=jetbrains" alt="Downloads">
+    <img src="https://img.shields.io/jetbrains/plugin/31487-imageflow-converter/?style=for-the-badge&logo=jetbrains" alt="Downloads">
   </a>
  <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT"></a>
 </p>
@@ -63,8 +63,8 @@ It is designed for practical day-to-day use with a clean, native-feeling interfa
 
 ## Supported IDEs
 
-- IntelliJ IDEA 2022.1+
-- Android Studio Flamingo (2022.2)+
+- IntelliJ IDEA 2024.1+
+- Android Studio Ladybug (2024.1)+
 
 ---
 
