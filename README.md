@@ -7,12 +7,19 @@
 <h1 align="center">ImageFlow Converter</h1>
 
 <p align="center">
-  <a href="https://plugins.jetbrains.com/plugin/31487-imageflow-converter" target="_blank">
-    <img src="https://img.shields.io/jetbrains/plugin/31487-imageflow-converter/?style=for-the-badge&logo=jetbrains" alt="Downloads">
-  </a>
- <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/IntelliJ_IDEA-2024.1+-000000?style=for-the-badge&logo=intellij-idea&logoColor=white" alt="IntelliJ IDEA 2024.1+">
+  <img src="https://img.shields.io/badge/Android_Studio-2024.1+-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white" alt="Android Studio 2024.1+">
+  <img src="https://img.shields.io/badge/Kotlin_Multiplatform-supported-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Supports KMP">
+  <img src="https://img.shields.io/badge/Native_Android-supported-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Supports Native Android">
 </p>
-
+<p align="center">
+  <a href="https://plugins.jetbrains.com/plugin/31487-imageflow-converter" target="_blank">
+    <img src="https://img.shields.io/jetbrains/plugin/d/31487-imageflow-converter?style=for-the-badge&logo=jetbrains" alt="Downloads">
+  </a>
+  <a href="./LICENSE.md">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT">
+  </a>
+</p>
 ## DEMO 📹:
 
 https://github.com/user-attachments/assets/b3d03a0a-118f-4c46-9e8a-77427474fab1
